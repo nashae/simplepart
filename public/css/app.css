@@ -1,0 +1,16 @@
+div.bannershow {
+    padding: 2em;
+    background-size: cover;
+    height: 300px;
+    background-position: center center;
+}
+
+div.bannershow h1, div.bannershow p {
+    color: rgb(252, 252, 252);
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+}
+
+a:link {
+    text-decoration: none;
+}
+

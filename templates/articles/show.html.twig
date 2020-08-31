@@ -1,0 +1,70 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	{{article.title}}
+{% endblock %}
+
+{% block body %}
+
+	<div class="bannershow" style="background-image: url({{ article.coverImage }})">
+		<div class="container">
+			<h1>{{ article.title }}</h1><br><br>
+			<p class="h3">{{ article.subTitle }}</p><br><br>
+			<p align="right">Par auteur</p>
+		</div>
+	</div>
+
+	<div class="container my-3">
+		<div class="row">
+			<div class="col-6">
+				<p>{{article.content[:550]|raw}}</p>
+
+			</div>
+			<div class="col-6">
+				{% for image in article.images %}
+					{% if loop.first %}
+						<div class="image">
+							<img src="{{image.url}}" height="400px" alt="">
+							<p>
+								<em>{{image.caption}}</em>
+							</p>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+		<div class="row">
+            <div class="col">
+			<p>{{article.content[400:]|raw}}</p>
+
+
+			<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
+				<ol class="carousel-indicators">
+					{% for image in article.images %}
+						<li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}" {% if loop.first %} class="active" {% endif %}></li>
+					{% endfor %}
+				</ol>
+				<div class="carousel-inner">
+					{% for image in article.images %}
+						<div class="carousel-item {% if loop.first %}active{% endif %}">
+							<img class="d-block w-100" src="{{ image.url }}" alt="First slide">
+							<div class="carousel-caption d-none d-md-block">
+								<h5>{{ article.title }}</h5>
+								<p>{{ image.caption }}</p>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+		</div>
+	</div>
+    </div>
+{% endblock %}

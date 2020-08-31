@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block title %}International{% endblock %}
+
+{% block body %}
+<div class="container">
+
+{% for article in articles %}
+{% include "articles/_articleindexcard.html.twig" %}
+{% endfor %}
+</div>
+{% endblock %}

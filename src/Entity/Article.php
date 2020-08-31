@@ -56,6 +56,11 @@ class Article
      */
     private $images;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $category;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -181,6 +186,18 @@ class Article
                 $image->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

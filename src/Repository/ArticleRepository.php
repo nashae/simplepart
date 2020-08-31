@@ -19,6 +19,31 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function sortByDate()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT a
+            FROM App\Entity\Article a
+            ORDER BY a.createdAt DESC'
+        );
+        return $query->getResult();
+    }
+
+    public function sortByCategory($category)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT a
+            FROM App\entity\Article a
+            WHERE a.category = :category
+            ORDER by a.createdAt DESC'
+        )->setParameter('category', $category);
+        return $query->getResult();
+    }
+
+
     // /**
     //  * @return Article[] Returns an array of Article objects
     //  */

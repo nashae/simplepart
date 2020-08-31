@@ -25,11 +25,13 @@ class AppFixtures extends Fixture
             $coverImage = $faker->imageUrl(1000,350, true);
             $content = '<p>' . join('</p><p>', $faker->paragraphs(mt_rand(10, 12))) . '</p>';
             $createdAt = $faker->dateTimeBetween('-10 days', 'now');
+            $catArray = ['international', 'france', 'economie', 'culture'];
             $article->setTitle($title)
                     ->setSubTitle($subtitle)
                     ->setCoverImage($coverImage)
                     ->setContent($content)
-                    ->setCreatedAt($createdAt);
+                    ->setCreatedAt($createdAt)
+                    ->setCategory(array_rand(array_flip($catArray)));
             $manager->persist($article);
             //images
             for($j = 1; $j <= mt_rand(2, 5); $j++){

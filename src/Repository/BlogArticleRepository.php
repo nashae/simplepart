@@ -19,6 +19,18 @@ class BlogArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, BlogArticle::class);
     }
 
+    public function sortByDate()
+    {
+    $entityManager = $this->getEntityManager();
+
+    $query = $entityManager->createQuery(
+        'SELECT b
+        FROM App\Entity\BlogArticle b
+        ORDER BY b.createdAt DESC'
+    );
+    return $query->getResult();
+    }
+
     // /**
     //  * @return BlogArticle[] Returns an array of BlogArticle objects
     //  */
