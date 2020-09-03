@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\BlogArticleRepository;
+use App\Entity\User;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BlogArticleRepository;
 
 /**
  * @ORM\Entity(repositoryClass=BlogArticleRepository::class)
@@ -39,6 +40,13 @@ class BlogArticle
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="blogArticles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    
     /**
      * creation du slug
      * 
@@ -107,4 +115,21 @@ class BlogArticle
 
         return $this;
     }
+
+    public function getAuthor(): ?Users
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Users $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+ 
+
+
+    
 }

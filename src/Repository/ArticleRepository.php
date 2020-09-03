@@ -36,10 +36,22 @@ class ArticleRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
             'SELECT a
-            FROM App\entity\Article a
+            FROM App\Entity\Article a
             WHERE a.category = :category
             ORDER by a.createdAt DESC'
         )->setParameter('category', $category);
+        return $query->getResult();
+    }
+
+    public function sortByAuthor($author)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT a
+            FROM App\Entity\Article a
+            WHERE a.author = :author
+            ORDER BY a.createdAt DESC'
+        )->setParameter('author', $author);
         return $query->getResult();
     }
 

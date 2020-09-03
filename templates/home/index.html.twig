@@ -8,56 +8,22 @@
 		<div class="row">
 			<div class="col-8">
 				{% for article in articles %}
-					<div class="card mb-3">
-					<a href="{{path('article_show', {'slug': article.slug} ) }}">
-						<h3 class="card-header">{{article.title}}</h3>
-					</a>
-						<div class="card-body">
-							{% if article.category == 'culture' %}
-								<a href="{{path('index_culture')}}">
-									<h6 class="card-subtitle text-muted" align="right">{{article.category}}</h6>
-								</a>
-							{% elseif article.category == 'france' %}
-								<a href="{{path('index_france')}}">
-									<h6 class="card-subtitle text-muted" align="right">{{article.category}}</h6>
-								</a>
-							{% elseif article.category == 'economie' %}
-								<a href="{{path('index_economie')}}">
-									<h6 class="card-subtitle text-muted" align="right">{{article.category}}</h6>
-								</a>
-							{% else %}
-								<a href="{{path('index_international')}}">
-									<h6 class="card-subtitle text-muted" align="right">{{article.category}}</h6>
-								</a>
-							{% endif %}
-							
-							
-							<a href="{{path('article_show', {'slug': article.slug} ) }}">
-								<h5 class="card-subtitle text-muted mt-2">{{article.subTitle}}</h6>
-							</a>
-						</div>
-						<img style="height: 300px; width: 100%; display: block;" src="{{article.coverImage}}" alt="Card image">
-						<div class="card-body">
-							<p class="card-text">
-								{{article.content[:500]|raw}}
-								<a href="{{path('article_show', {'slug': article.slug} ) }}">...</a>
-							</p>
-						</div>
-						<div class="card-footer text-muted">
-							{{article.createdAt | date('d/m/Y')}}
-						</div>
-					</div>
-
+					{% include "articles/_articleindexcard.html.twig" %}
 				{% endfor %}
-
 			</div>
 			<div class="col-4">
 				{% for blog in blogs %}
 					<div class="card border-primary mb-3" style="max-width: 20rem;">
-						<div class="card-header">{{blog.title}}</div>
+						<a href="{{path('blog_show', {'slug': blog.slug}) }}">
+							<div class="card-header">{{blog.title}}</div>
+						</a>
 						<div class="card-body">
-							<h4 class="card-title">auteur</h4>
-							<p class="card-text">{{blog.content[:150]|raw}}...</p>
+							<a href="{{path('users_show',{'id': blog.author.id}) }}">
+								<h6 class="card-title" align="right">par {{blog.author.username}}</h6>
+							</a>
+							<a href="{{path('blog_show', {'slug': blog.slug}) }}">
+								<p class="card-text">{{blog.content[:150]|raw}}...</p>
+							</a>
 						</div>
 					</div>
 
