@@ -5,8 +5,9 @@
 {% block body %}
 <div class="container">
 
-{% for article in articles %}
+{% for article in paginator.dataByCategory('france') %}
 {% include "articles/_articleindexcategorycard.html.twig" %}
 {% endfor %}
+{% include 'partials/paginator.html.twig' with {'route': 'index_france'} %}
 </div>
 {% endblock %}

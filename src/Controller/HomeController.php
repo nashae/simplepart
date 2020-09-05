@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
-use App\Repository\ArticleRepository;
+use App\Service\PaginatorService;
 use App\Repository\BlogArticleRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,15 +13,21 @@ class HomeController extends AbstractController
 {
     /**
      * affiche la liste des articles et blogs
-     * @Route("/", name="homepage")
+     * @Route("/{page<\d+>?1}", name="homepage")
+     * 
+     * @return Response
      */
-    public function index(ArticleRepository $articleRepo, BlogArticleRepository $blogRepo)
+    public function index( BlogArticleRepository $blogRepo, $page, PaginatorService $paginator)
     {
-        $articles = $articleRepo->sortByDate();
+        $paginator->setEntityClass(Article::class)
+                  ->setPage($page);
+        
+        
+        //$articles = $articleRepo->sortByDate();
         $blogs = $blogRepo->sortByDate();
         return $this->render('home/index.html.twig', [
-            'articles' => $articles,
-            'blogs' => $blogs
+            'blogs' => $blogs,
+            'paginator' => $paginator
         ]);
     }
 

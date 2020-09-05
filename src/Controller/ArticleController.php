@@ -2,27 +2,33 @@
 
 namespace App\Controller;
 
-use App\Entity\Article;
 use App\Entity\Users;
+use App\Entity\Article;
+use App\Service\PaginatorService;
 use App\Repository\ArticleRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class ArticleController extends AbstractController
 {
     /**
      * affiche la categorie International
      * 
-     * @Route("/articles/international", name="index_international")
+     * @Route("/articles/international/{page<\d+>?1}", name="index_international")
      *
-     * @param ArticleRepository $articleRepo
+     * @param PaginatorService $paginator
      * @return Response
      */
-    public function indexInternational(ArticleRepository $articleRepo)
+    public function indexInternational($page, PaginatorService $paginator)
     {
-        $articles = $articleRepo->sortByCategory('international');
+        $paginator->setEntityClass(Article::class)
+                   ->setPage($page);
+        
+        
         return $this->render("articles/international.html.twig",[
-            'articles' => $articles
+            'paginator' => $paginator
+
         ]);
         
         
@@ -31,48 +37,60 @@ class ArticleController extends AbstractController
     /**
      * page france
      * 
-     * @Route("/articles/france", name="index_france")
+     * @Route("/articles/france/{page<\d+>?1}", name="index_france")
      *
-     * @param ArticleRepository $articleRepo
+     * @param PaginatorService $paginator
      * @return Response
      */
-    public function indexFrance(ArticleRepository $articleRepo)
+    public function indexFrance($page, PaginatorService $paginator)
     {
-        $articles = $articleRepo->sortByCategory('france');
-        return $this->render('articles/france.html.twig',[
-            'articles' => $articles
+        $paginator->setEntityClass(Article::class)
+                   ->setPage($page);
+        
+        
+        return $this->render("articles/france.html.twig",[
+            'paginator' => $paginator
+
         ]);
     }
 
     /**
      * page economie
      * 
-     * @Route("/articles/economie", name="index_economie")
+     * @Route("/articles/economie/{page<\d+>?1}", name="index_economie")
      *
-     * @param ArticleRepository $articleRepo
+     * @param PaginatorService $paginator
      * @return Response
      */
-    public function indexEconomie(ArticleRepository $articleRepo)
+    public function indexEconomie($page, PaginatorService $paginator)
     {
-        $articles = $articleRepo->sortByCategory('economie');
-        return $this->render('articles/economie.html.twig',[
-            'articles' => $articles
+        $paginator->setEntityClass(Article::class)
+                   ->setPage($page);
+        
+        
+        return $this->render("articles/economie.html.twig",[
+            'paginator' => $paginator
+
         ]);
     }
 
     /**
      * page Culture
      * 
-     * @Route("/articles/culture", name="index_culture")
+     * @Route("/articles/culture/{page<\d+>?1}", name="index_culture")
      *
-     * @param ArticleRepository $articleRepo
+     * @param PaginatorService $paginator
      * @return Response
      */
-    public function indexCulture(ArticleRepository $articleRepo)
+    public function indexCulture($page, PaginatorService $paginator)
     {
-        $articles = $articleRepo->sortByCategory('culture');
-        return $this->render('articles/culture.html.twig',[
-            'articles' => $articles
+        $paginator->setEntityClass(Article::class)
+                   ->setPage($page);
+        
+        
+        return $this->render("articles/culture.html.twig",[
+            'paginator' => $paginator
+
         ]);
     }
 

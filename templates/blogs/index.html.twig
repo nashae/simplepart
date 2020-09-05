@@ -1,27 +1,32 @@
 {% extends "base.html.twig" %}
 
-{% block title %}derniers blogs{% endblock %}
+{% block title %}derniers blogs
+{% endblock %}
 
 {% block body %}
 
-<div class="container">
-{% for blog in blogs %}
-    
-
-<div class="card my-3">
-<div class="jumbotron">
-  <h1 class="display-5" align="center">{{blog.title}}</h1>
-  <hr class="my-4">
-  <p>
-    		<a href="{{path('users_show', {'id': blog.author.id})}}">
-          par {{blog.author.userName}} le {{blog.createdAt|date('d/m/Y') }}
-        </a>
-  </p>
-</div>
-<p>{{blog.content|raw}}</p>
-</div>
+	<div class="container">
+		{% for blog in paginator.data %}
 
 
-{% endfor %}
-</div>
+			<div class="card my-3">
+				<div class="jumbotron">
+					<h1 class="display-5" align="center">{{blog.title}}</h1>
+					<hr class="my-4">
+					<p>
+						<a href="{{path('users_show', {'id': blog.author.id})}}">
+							par
+							{{blog.author.userName}}
+							le
+							{{blog.createdAt|date('d/m/Y') }}
+						</a>
+					</p>
+				</div>
+				<p>{{blog.content|raw}}</p>
+			</div>
+
+
+		{% endfor %}
+	</div>
+  {% include "partials/paginator.html.twig" with {'route': 'blogs_index'} %}
 {% endblock %}

@@ -1,12 +1,14 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Culture{% endblock %}
+{% block title %}Culture
+{% endblock %}
 
 {% block body %}
-<div class="container">
+	<div class="container">
 
-{% for article in articles %}
-{% include "articles/_articleindexcateorycard.html.twig" %}
-{% endfor %}
-</div>
-{% endblock %}
+		{% for article in paginator.dataByCategory('culture') %}
+			{% include "articles/_articleindexcategorycard.html.twig" %}
+		{% endfor %}
+		{% include 'partials/paginator.html.twig' with {'route': 'index_culture'} %}
+	</div>
+</div>{% endblock %}

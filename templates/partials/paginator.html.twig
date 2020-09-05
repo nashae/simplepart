@@ -1,0 +1,16 @@
+<div class="d-flex justify-content-center">
+			{% set page = paginator.page %}
+			{% set nbpages = paginator.pages %}
+			<ul class="pagination pagination-lg">
+				{% if page > 1 %}
+					<li class="page-item">
+						<a class="page-link" href="{{path(route, {'page': page - 1 }) }}">Page precedente</a>
+					</li>
+				{% endif %}
+				{% if page < nbpages %}
+					<li class="page-item">
+						<a class="page-link" href="{{path(route, {'page': page + 1 }) }}">Page suivante</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>

@@ -28,6 +28,7 @@ class BlogArticleRepository extends ServiceEntityRepository
         FROM App\Entity\BlogArticle b
         ORDER BY b.createdAt DESC'
     );
+    $query->setMaxResults(15);
     return $query->getResult();
     }
 
