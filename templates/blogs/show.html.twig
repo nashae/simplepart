@@ -1,14 +1,59 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{blog.title}}{% endblock %}
+{% block title %}
+	{{blog.title}}
+{% endblock %}
 
 {% block body %}
-<div class="container">
-<div class="jumbotron">
-  <h1 class="display-5" align="center">{{blog.title}}</h1>
-  <hr class="my-4">
-  <p>par auteur le {{blog.createdAt|date('d/m/Y') }}</p>
-</div>
-<p>{{blog.content|raw}}</p>
-</div>
+	<div class="container">
+		<div class="jumbotron">
+			<h1 class="display-5" align="center">{{blog.title}}</h1>
+			<hr class="my-4">
+			<p>par <a href="{{path('users_show',{'id': blog.author.id}) }}">{{blog.author.userName}}</a>
+				 le {{blog.createdAt|date('d/m/Y') }}
+      </p>
+		</div>
+		<p>{{blog.content|raw}}</p>
+
+
+		<hr>
+		<div class="alert alert-dismissible alert-warning">
+			<h4 class="alert-heading" align="center">ESPACE COMMENTAIRES</h4>
+			<p class="mb-0">
+				<a href="#" class="alert-link">connectez-vous</a>
+				pour participer à la discussion</p>
+		</div>
+		<div id="commentaires"></div>
+
+		<div class="d-flex flex-column">
+
+			{% for blogcomment in blog.blogcomments %}
+
+				<div class="card border-secondary mt-3" style="width: 50rem;">
+					<div class="card-header">par
+						{{blogcomment.author.userName}}</div>
+					<div class="card-body">
+						<p class="card-text">{{blogcomment.content}}</p>
+						<a href="#">
+							<p class="card-text" align="right">répondre</p>
+						</a>
+					</div>
+				</div>
+
+				{% for blogCommentResponse in blogcomment.blogcommentResponses %}
+					<div class="card border-secondary border align-self-end" style="width: 50rem">
+						<div class="card-header">
+							{{blogCommentResponse.author.userName}}
+							a repondu</div>
+						<div class="card-body">
+							<p class="card-text">{{blogCommentResponse.content}}</p>
+							<a href="#">
+								<p class="card-text" align="right">répondre</p>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}

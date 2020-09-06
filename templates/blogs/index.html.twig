@@ -9,17 +9,24 @@
 		{% for blog in paginator.data %}
 
 
-			<div class="card my-3">
+			<div class="card my-3 clearfix">
 				<div class="jumbotron">
-					<h1 class="display-5" align="center">{{blog.title}}</h1>
+					<a href="{{path('blog_show', {'slug': blog.slug}) }}">
+						<h1 class="display-5" align="center">{{blog.title}}</h1>
+					</a>
 					<hr class="my-4">
 					<p>
+						par
 						<a href="{{path('users_show', {'id': blog.author.id})}}">
-							par
 							{{blog.author.userName}}
-							le
-							{{blog.createdAt|date('d/m/Y') }}
 						</a>
+						le
+						{{blog.createdAt|date('d/m/Y') }}
+						<div class="float-right">
+							<a href="{{path('blog_show', {'slug': blog.slug}) }}">
+								{{blog.blogcomments | length}} commentaire(s)
+							</a>
+						</div>
 					</p>
 				</div>
 				<p>{{blog.content|raw}}</p>

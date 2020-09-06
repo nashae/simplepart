@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\User;
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BlogArticleRepository;
 
@@ -45,6 +47,16 @@ class BlogArticle
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BlogComment::class, mappedBy="BlogArticle", orphanRemoval=true)
+     */
+    private $blogComments;
+
+    public function __construct()
+    {
+        $this->blogComments = new ArrayCollection();
+    }
 
     
     /**
@@ -124,6 +136,37 @@ class BlogArticle
     public function setAuthor(?Users $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BlogComment[]
+     */
+    public function getBlogComments(): Collection
+    {
+        return $this->blogComments;
+    }
+
+    public function addBlogComment(BlogComment $blogComment): self
+    {
+        if (!$this->blogComments->contains($blogComment)) {
+            $this->blogComments[] = $blogComment;
+            $blogComment->setBlogArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogComment(BlogComment $blogComment): self
+    {
+        if ($this->blogComments->contains($blogComment)) {
+            $this->blogComments->removeElement($blogComment);
+            // set the owning side to null (unless already changed)
+            if ($blogComment->getBlogArticle() === $this) {
+                $blogComment->setBlogArticle(null);
+            }
+        }
 
         return $this;
     }

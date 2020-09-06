@@ -4,9 +4,13 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Image;
-use App\Entity\Article;
-use App\Entity\BlogArticle;
 use App\Entity\Users;
+use App\Entity\Article;
+use App\Entity\Comment;
+use App\Entity\BlogArticle;
+use App\Entity\BlogComment;
+use App\Entity\BlogCommentResponse;
+use App\Entity\CommentResponse;
 use Bluemmb\Faker\PicsumPhotosProvider;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -72,6 +76,24 @@ class AppFixtures extends Fixture
                       ->setArticle($article);
                 $manager->persist($image);
             }
+            //commentaires
+            for($k = 1; $k <= mt_rand(1, 5); $k++){
+                $comment = new Comment();
+                $comment->setContent($faker->text(mt_rand(50, 200)))
+                        ->setAuthor($users[mt_rand(1, count($users) - 1)])
+                        ->setArticle($article);
+                $manager->persist($comment);
+                //reponses aux commentaires
+                if(mt_rand(0,1)){
+                    for($l = 1; $l <= mt_rand(1, 3); $l++){
+                        $commentResponse = new CommentResponse();
+                        $commentResponse->setContent($faker->text(mt_rand(50, 200)))
+                                        ->setAuthor($users[mt_rand(1, count($users) - 1)])
+                                        ->setComment($comment);
+                        $manager->persist($commentResponse);
+                    }
+                }
+            }
 
         }
 
@@ -87,6 +109,24 @@ class AppFixtures extends Fixture
                         ->setCreatedAt($faker->dateTimeBetween('-10 days', 'now'))
                         ->setAuthor($user);
             $manager->persist($blogArticle);
+            //blogcomment
+            for($m = 1; $m <= mt_rand(1,5); $m++){
+                $blogComment = new BlogComment();
+                $blogComment->setContent($faker->text(mt_rand(50, 200)))
+                            ->setAuthor($users[mt_rand(1, count($users) - 1)])
+                            ->setBlogArticle($blogArticle);
+                $manager->persist($blogComment);
+                //blogCommentResponse
+                if(mt_rand(0, 1)){
+                    for($n = 1; $n <= mt_rand(1, 3); $n++){
+                        $blogCommentResponse = new BlogCommentResponse();
+                        $blogCommentResponse->setContent($faker->text(mt_rand(50, 200)))
+                                            ->setAuthor($users[mt_rand(1, count($users) - 1)])
+                                            ->setComment($blogComment);
+                        $manager->persist($blogCommentResponse);
+                    }
+                }
+            }
 
         }
 

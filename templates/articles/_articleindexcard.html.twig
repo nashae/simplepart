@@ -3,7 +3,7 @@
 				<h3 class="card-header">{{article.title}}</h3>
 			</a>
 			<div class="card-body">
-				<a href="{{path('users_show', {'id': article.author.id})}}" align="left">par
+				<a href="{{path('users_show', {'id': article.author.id})}}" align="left" class="text-muted">par
 					{{article.author.userName}}</a>
 				<p>
 					{% if article.category == 'culture' %}
@@ -37,7 +37,19 @@
 					<a href="{{path('article_show', {'slug': article.slug} ) }}">...</a>
 				</p>
 			</div>
-			<div class="card-footer text-muted">
-				{{article.createdAt | date('d/m/Y')}}
-			</div>
+			<div class="card-footer text-muted clearfix">
+		<div class="float-left"> {{article.createdAt | date('d/m/Y')}}</div>
+		{% if article.comments | length < 1 %}
+			<div class="float-right text-muted">pas de commentaires</div>
+		{% elseif article.comments | length == 1 %}
+			<a href="{{path('article_show',{'slug': article.slug}) }}#commentaires">
+				<div class="float-right text-muted">{{article.comments | length }} commentaire</div>
+			</a>
+		{% else %}
+			<a href="{{path('article_show',{'slug': article.slug}) }}#commentaires">
+				<div class="float-right text-muted">{{article.comments | length }} commentaires</div>
+			</a>
+		{% endif %}
+		
+	</div>
 		</div>

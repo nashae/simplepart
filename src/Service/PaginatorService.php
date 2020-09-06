@@ -40,7 +40,14 @@ class PaginatorService
         $repo = $this->manager->getRepository($this->entityClass);
         $dataBycategory = $repo->findBy(['category' => $category],['createdAt' => 'DESC'],$this->limit, $offset);
         return $dataBycategory;
+    }
 
+    public function getDataByAuthor($user)
+    {
+        $offset = $this->currentPage * $this->limit - $this->limit;
+        $repo = $this->manager->getRepository($this->entityClass);
+        $dataByAuthor = $repo->findBy(['author' => $user],['createdAt' => 'DESC'],$this->limit, $offset);
+        return $dataByAuthor;
     }
 
     /**

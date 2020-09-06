@@ -53,10 +53,34 @@ class Users implements UserInterface
      */
     private $articles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author")
+     */
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CommentResponse::class, mappedBy="author", orphanRemoval=true)
+     */
+    private $commentResponses;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BlogComment::class, mappedBy="author", orphanRemoval=true)
+     */
+    private $blogComments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BlogCommentResponse::class, mappedBy="author", orphanRemoval=true)
+     */
+    private $blogCommentResponses;
+
     public function __construct()
     {
         $this->blogArticles = new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->commentResponses = new ArrayCollection();
+        $this->blogComments = new ArrayCollection();
+        $this->blogCommentResponses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -200,6 +224,130 @@ class Users implements UserInterface
             // set the owning side to null (unless already changed)
             if ($article->getAuthor() === $this) {
                 $article->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getAuthor() === $this) {
+                $comment->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommentResponse[]
+     */
+    public function getCommentResponses(): Collection
+    {
+        return $this->commentResponses;
+    }
+
+    public function addCommentResponse(CommentResponse $commentResponse): self
+    {
+        if (!$this->commentResponses->contains($commentResponse)) {
+            $this->commentResponses[] = $commentResponse;
+            $commentResponse->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentResponse(CommentResponse $commentResponse): self
+    {
+        if ($this->commentResponses->contains($commentResponse)) {
+            $this->commentResponses->removeElement($commentResponse);
+            // set the owning side to null (unless already changed)
+            if ($commentResponse->getAuthor() === $this) {
+                $commentResponse->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BlogComment[]
+     */
+    public function getBlogComments(): Collection
+    {
+        return $this->blogComments;
+    }
+
+    public function addBlogComment(BlogComment $blogComment): self
+    {
+        if (!$this->blogComments->contains($blogComment)) {
+            $this->blogComments[] = $blogComment;
+            $blogComment->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogComment(BlogComment $blogComment): self
+    {
+        if ($this->blogComments->contains($blogComment)) {
+            $this->blogComments->removeElement($blogComment);
+            // set the owning side to null (unless already changed)
+            if ($blogComment->getAuthor() === $this) {
+                $blogComment->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BlogCommentResponse[]
+     */
+    public function getBlogCommentResponses(): Collection
+    {
+        return $this->blogCommentResponses;
+    }
+
+    public function addBlogCommentResponse(BlogCommentResponse $blogCommentResponse): self
+    {
+        if (!$this->blogCommentResponses->contains($blogCommentResponse)) {
+            $this->blogCommentResponses[] = $blogCommentResponse;
+            $blogCommentResponse->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogCommentResponse(BlogCommentResponse $blogCommentResponse): self
+    {
+        if ($this->blogCommentResponses->contains($blogCommentResponse)) {
+            $this->blogCommentResponses->removeElement($blogCommentResponse);
+            // set the owning side to null (unless already changed)
+            if ($blogCommentResponse->getAuthor() === $this) {
+                $blogCommentResponse->setAuthor(null);
             }
         }
 
