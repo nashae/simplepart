@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Edition d'un article de blog{% endblock %}
+{% block body %}
+
+<h1 class="my-3" align="center">Edition d'un article de blog</h1>
+<div class="container">
+
+{{form_start(form)}}
+
+{{form_widget(form)}}
+<button type="submit" class="btn btn-primary float-right">Enregistrer les modifications</button>
+{{form_end(form)}}
+</div>
+
+
+{% endblock %}

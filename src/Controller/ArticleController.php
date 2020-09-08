@@ -4,14 +4,80 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Entity\Article;
+use App\Form\ArticleType;
 use App\Service\PaginatorService;
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpFoundation\Request;
 
 class ArticleController extends AbstractController
 {
+    /**
+     * form creation article
+     *
+     * @Route("articles/new", name="article_create")
+     * 
+     * @return Response
+     */
+    public function create(Request $request, EntityManagerInterface $manager)
+    {
+    $article = new Article();
+    
+    $form = $this->createForm(ArticleType::class, $article);
+    $form->handleRequest($request);
+    if($form->isSubmitted() && $form->isValid()){
+        $article->setAuthor($this->getUser());
+        $manager->persist($article);
+        $manager->flush();
+        $this->addFlash(
+            'success',
+            "l'article {$article->getTitle()} a bien été enregistré"
+        );
+        return $this->redirectToRoute('article_show',[
+            'slug' => $article->getSlug()
+        ]);
+    }
+    return $this->render('articles/new.html.twig', [
+        'form' => $form->createView()
+    ]);
+    }
+
+    /**
+     * form edition article
+     * 
+     * @Route("articles/{slug}/edit", name="article_edit")
+     *
+     * @param Article $article
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function edit(Article $article, Request $request, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $article->setAuthor($this->getUser());
+            $manager->persist($article);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                "Les modifications ont bien été enregistrées"
+            );
+            return $this->redirectToRoute('article_show',[
+                'slug' => $article->getSlug()
+            ]);
+        }
+        return $this->render('articles/edit.html.twig',[
+            'form' => $form->createView(),
+            'article' => $article
+        ]);
+    }
+
+
     /**
      * affiche la categorie International
      * 

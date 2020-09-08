@@ -2,15 +2,22 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *  fields={"title"},
+ *  message="Un autre article a déjà ce titre")
+ * 
  */
 class Article
 {
@@ -23,6 +30,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=3, minMessage="Le titre doit faire plus de 3 caractères")
      */
     private $title;
 
@@ -38,6 +46,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url()
      */
     private $coverImage;
 
@@ -52,7 +61,8 @@ class Article
     private $createdAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="Article", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="Article", orphanRemoval=true, cascade="all")
+     * @Assert\Valid()
      */
     private $images;
 
@@ -91,6 +101,21 @@ class Article
         if (empty($this->slug)) {
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
+        }
+    }
+
+    /**
+     * initialise date de creation d'article
+     * 
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return void
+     */
+    public function initializeCreatedAt()
+    {
+        if(empty($this->createdAt)){
+            $this->createdAt = new DateTime();
         }
     }
 

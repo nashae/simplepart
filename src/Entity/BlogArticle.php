@@ -8,10 +8,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BlogArticleRepository;
+use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=BlogArticleRepository::class)
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *  fields={"title"},
+ *  message="Un article de blog possède déjà ce titre, merci de le modifier"
+ * )
  */
 class BlogArticle
 {
@@ -24,6 +31,7 @@ class BlogArticle
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=3, minMessage="Le titre doit faire plus de 3 caractères")
      */
     private $title;
 
@@ -72,6 +80,21 @@ class BlogArticle
         if(empty($this->slug)){
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
+        }
+    }
+
+    /**
+     * creation du createdAT
+     * 
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return void
+     */
+    public function initializeCreatedAt()
+    {
+        if(empty($this->createdAt)){
+            $this->createdAt = new DateTime();
         }
     }
 
