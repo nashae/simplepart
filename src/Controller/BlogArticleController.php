@@ -4,13 +4,14 @@ namespace App\Controller;
 
 use App\Entity\BlogArticle;
 use App\Form\BlogArticleType;
-use App\Repository\BlogArticleRepository;
 use App\Service\PaginatorService;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\BlogArticleRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
 class BlogArticleController extends AbstractController
 {
@@ -49,6 +50,8 @@ class BlogArticleController extends AbstractController
      * edtion d'un article de blog
      * 
      * @Route("blogs/{slug}/edit", name="blogs_edit")
+     * @Security("is_granted('ROLE_AUTHOR') and user == article.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette ressource")
+
      *
      * @param BlogArticle $blogArticle
      * @param Request $request

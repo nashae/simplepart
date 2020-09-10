@@ -44,17 +44,17 @@ class Users implements UserInterface
     private $userName;
 
     /**
-     * @ORM\OneToMany(targetEntity=BlogArticle::class, mappedBy="author")
+     * @ORM\OneToMany(targetEntity=BlogArticle::class, mappedBy="author", orphanRemoval=true)
      */
     private $blogArticles;
 
     /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author", orphanRemoval=true)
      */
     private $articles;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author", orphanRemoval=true)
      */
     private $comments;
 

@@ -50,6 +50,15 @@ class PaginatorService
         return $dataByAuthor;
     }
 
+    public function getDataByUser()
+    {
+        $offset = $this->currentPage * $this->limit - $this->limit;
+        $repo = $this->manager->getRepository($this->entityClass);
+        $data = $repo->findBy([],['id' => 'DESC'],$this->limit, $offset);
+        return $data;
+
+    }
+
     /**
      * Get the value of entityClass
      */ 

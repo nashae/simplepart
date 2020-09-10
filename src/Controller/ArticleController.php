@@ -7,11 +7,13 @@ use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Service\PaginatorService;
 use App\Repository\ArticleRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ArticleController extends AbstractController
 {
@@ -19,7 +21,7 @@ class ArticleController extends AbstractController
      * form creation article
      *
      * @Route("articles/new", name="article_create")
-     * 
+     * @IsGranted("ROLE_AUTHOR")
      * @return Response
      */
     public function create(Request $request, EntityManagerInterface $manager)
@@ -49,6 +51,7 @@ class ArticleController extends AbstractController
      * form edition article
      * 
      * @Route("articles/{slug}/edit", name="article_edit")
+     * @Security("is_granted('ROLE_AUTHOR') and user == article.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette ressource")
      *
      * @param Article $article
      * @param Request $request

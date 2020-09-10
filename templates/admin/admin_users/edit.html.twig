@@ -1,0 +1,180 @@
+{% extends "base.html.twig" %}
+
+{% block title %}edition d'un utilisateur
+{% endblock %}
+
+{% block body %}
+	<h1 align="center" class="my-3">Modification des informations de l'utilisateur
+		{{user.userName}}</h1>
+	<div class="container">
+		{{form_start(form)}}
+
+		{{form_widget(form)}}
+		<button type="submit" class="btn btn-primary">enregistrer les modifications</button>
+		{{form_end(form)}}
+	</div>
+	{% if user.articles | length > 0 %}
+		<h1 align="center" class="my-5">Gestion des articles de
+			{{user.userName}}</h1>
+		<div class="container-fluid">
+
+			<table class="table table-hover">
+				<thead>
+					<tr align="center">
+						<th class="col-3">Titre</th>
+						<th>Image principale</th>
+						<th>Images secondaires</th>
+						<th>Contenu</th>
+						<th>Categories</th>
+						<th>Commentaires</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for article in user.articles %}
+						<tr align="center">
+							<td class="col-4">
+								<a href="{{path('article_show',{'slug': article.slug})}}">{{article.title}}</a>
+							</td>
+							<td>
+								<a href="{{article.coverImage}}">
+									<img src="{{article.coverImage}}" alt="miniature" class="imgmini">
+								</a>
+							</td>
+							<td>{{article.images | length}}</td>
+							<td>
+								<a href="{{path('article_show', {'slug': article.slug}) }}">lien</a>
+							</td>
+							<td>{{article.category}}</td>
+							<td>
+								<a href="{{path('article_show',{'slug': article.slug})}}#commentaires">{{article.comments | length}}</td>
+							</td>
+							<td>
+								<a href="{{path('admin_article_edit', {'slug': article.slug}) }}" class="btn btn-primary">
+									<i class="fas fa-edit"></i>
+								</a>
+								<a href="{{path('admin_article_delete', {'slug': article.slug}) }}" class="btn btn-danger">
+									<i class="fas fa-trash"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+	{% endif %}
+	{% if user.blogArticles | length > 0 %}
+		<h1 align="center" class="my-5">Gestion des articles de blog de
+			{{user.userName}}</h1>
+		<div class="container-fluid">
+
+			<table class="table table-hover">
+				<thead>
+					<tr align="center">
+						<th>Titre</th>
+						<th>Contenu</th>
+						<th>Commentaires</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for blogArticle in user.blogArticles %}
+						<tr align="center">
+							<td>{{blogArticle.title}}</td>
+							<td>
+								<a href="{{path('blog_show', {'slug': blogArticle.slug}) }}">lien</a>
+							</td>
+							<td>{{blogArticle.blogComments | length}}</td>
+							<td>
+								<a href="{{path('admin_blogArticle_edit', {'slug': blogArticle.slug}) }}" class="btn btn-primary">
+									<i class="fas fa-edit"></i>
+								</a>
+								<a href="{{path('admin_blogArticle_delete', {'slug': blogArticle.slug}) }}" class="btn btn-danger">
+									<i class="fas fa-trash"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+	{% endif %}
+
+	{% if user.comments | length > 0 %}
+		<h1 align="center" class="my-5">Gestion des commentaires de
+			{{user.userName}}</h1>
+		<div class="container-fluid">
+
+			<table class="table table-hover">
+				<thead>
+					<tr align="center">
+						<th class="col-5">article lié</th>
+						<th class="col-5">Contenu</th>
+						<th class="col-2">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for comment in user.comments %}
+						<tr align="center">
+							<td class="col-5">{{comment.article.title}}</td>
+							<td class="col-5">{{comment.content}}</td>
+							<td class="col-2">
+								<a href="{{path('admin_comment_edit', {'id': comment.id}) }}" class="btn btn-primary">
+									<i class="fas fa-edit"></i>
+								</a>
+								<a href="{{path('admin_comment_delete', {'id': comment.id}) }}" class="btn btn-danger">
+									<i class="fas fa-trash"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+					{% for commentResponse in user.commentResponses %}
+						<tr align="center">
+							<td class="col-5">{{commentResponse.comment.article.title}}</td>
+							<td class="col-5">{{commentResponse.content}}</td>
+							<td class="col-2">
+								<a href="{{path('admin_commentResponse_edit', {'id': commentResponse.id}) }}" class="btn btn-primary">
+									<i class="fas fa-edit"></i>
+								</a>
+								<a href="{{path('admin_commentResponse_delete', {'id': commentResponse.id}) }}" class="btn btn-danger">
+									<i class="fas fa-trash"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+					{% for blogComment in user.blogComments %}
+						<tr align="center">
+							<td class="col-5">{{blogComment.blogArticle.title}}</td>
+							<td class="col-5">{{blogComment.content}}</td>
+							<td class="col-2">
+								<a href="{{path('admin_blogComment_edit', {'id': blogComment.id}) }}" class="btn btn-primary">
+									<i class="fas fa-edit"></i>
+								</a>
+								<a href="{{path('admin_blogComment_delete', {'id': blogComment.id}) }}" class="btn btn-danger">
+									<i class="fas fa-trash"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+					{% for blogCommentResponse in user.blogCommentResponses %}
+						<tr align="center">
+							<td class="col-5">{{blogCommentResponse.comment.blogArticle.title}}</td>
+							<td class="col-5">{{blogCommentResponse.content}}</td>
+							<td class="col-2">
+								<a href="{{path('admin_blogCommentResponse_edit', {'id': blogCommentResponse.id}) }}" class="btn btn-primary">
+									<i class="fas fa-edit"></i>
+								</a>
+								<a href="{{path('admin_blogCommentResponse_delete', {'id': blogCommentResponse.id}) }}" class="btn btn-danger">
+									<i class="fas fa-trash"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+	{% endif %}
+{% endblock %}

@@ -29,7 +29,8 @@ class ArticleType extends ApplicationType
                     'france' => 'france',
                     'economie' => 'economie',
                     'culture' => 'culture'
-                ]])
+                ]
+            ])
             ->add('images', CollectionType::class,[
                 'entry_type' => ImageType::class,
                 'allow_add' => true,

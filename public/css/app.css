@@ -14,3 +14,8 @@ a:link {
     text-decoration: none;
 }
 
+.imgmini {
+    max-width: 112px;
+    max-height: 64px;
+}
+

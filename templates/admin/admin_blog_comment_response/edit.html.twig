@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition d'une réponse à un commentaire de blog{% endblock %}
+
+{% block body %}
+<h1 class="my-3" align="center">Edition d'une réponse à un commentaire de blog</h1>
+<div class="container">
+
+{{form_start(form)}}
+
+{{form_widget(form)}}
+<button type="submit" class="btn btn-primary float-right">Modifier le commentaire</button>
+{{form_end(form)}}
+</div>
+
+
+{% endblock %}

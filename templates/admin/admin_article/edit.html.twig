@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition d'un article{% endblock %}
+
+{% block body %}
+<h1 class="my-3" align="center">Edition de l'article {{article.title}}</h1>
+{% form_theme form 'articles/_collectionType.html.twig' %}
+<div class="container">
+
+{{form_start(form)}}
+
+{{form_widget(form)}}
+<button type="submit" class="btn btn-primary float-right">Modifier l'article</button>
+{{form_end(form)}}
+</div>
+
+
+{% endblock %}
+{% block javascripts %}
+	<script src="/js/ad.js"></script>
+{% endblock %}
