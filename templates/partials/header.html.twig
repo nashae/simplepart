@@ -28,27 +28,47 @@
 				</li>
 				{% if not app.user %}
 					<li class="nav-item">
-						<a class="nav-link" href='#'>se connecter</a>
+						<a class="nav-link" href='{{path('app_login')}}'>se connecter</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">s'incrire</a>
+						<a class="nav-link" href="{{path('app_register')}}">s'incrire</a>
 					</li>
 				{% endif %}
 				{% if app.user %}
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mon Compte</a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="#">mon compte</a>
-						<a class="dropdown-item" href="#">mes blogs</a>
-						<a class="dropdown-item" href="#">mes commentaires</a>
-						<a class="dropdown-item" href="#">devenir redacteur</a>
+						<a class="dropdown-item" href="{{path('users_edit_info', {'id': app.user.id})}}">mon compte</a>
+						<a class="dropdown-item" href="{{path('users_Blog_Show', {'id': app.user.id})}}">mes blogs</a>
+						<a class="dropdown-item" href="{{path('commentByUserList', {'user': app.user.id}) }}">mes commentaires</a>
 						{% if is_granted('ROLE_AUTHOR') %}
-							<a class="dropdown-item" href="#">mes articles</a>
+							<a class="dropdown-item" href="{{path('users_Article_Show', {'id': app.user.id}) }}">mes articles</a>
 						{% endif %}
 						{% if is_granted('ROLE_ADMIN') %}
 							<a class="dropdown-item" href="{{path('admin_users')}}">administration</a>
 						{% endif %}
 						<a class="dropdown-item" href="{{path('app_logout')}}">déconnexion</a>
+					</div>
+				</li>
+				{% endif %}
+				{% if app.user %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Participez</a>
+					<div class="dropdown-menu">
+						{% if not is_granted('ROLE_AUTHOR') %}
+							<a class="dropdown-item" href="#">Devenir redacteur</a>
+						{% endif %}
+						{% if not is_granted('ROLE_MODO') %}
+							<a class="dropdown-item" href="#">Devenir moderateur</a>
+						{% endif %}
+						{% if is_granted('ROLE_USER') %}
+							{% if not is_granted('ROLE_AUTHOR') %}
+								<a class="dropdown-item" href="#">Rédiger un blog</a>
+							{% endif %}
+						{% endif %}
+						{% if is_granted('ROLE_AUTHOR') %}
+							<a class="dropdown-item" href="#">Rédiger un article</a>
+						{% endif %}
 					</div>
 				</li>
 				{% endif %}

@@ -50,7 +50,7 @@ class BlogArticleController extends AbstractController
      * edtion d'un article de blog
      * 
      * @Route("blogs/{slug}/edit", name="blogs_edit")
-     * @Security("is_granted('ROLE_AUTHOR') and user == article.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette ressource")
+     * @Security("is_granted('ROLE_USER') and user == blogArticle.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette ressource")
 
      *
      * @param BlogArticle $blogArticle
@@ -68,7 +68,7 @@ class BlogArticleController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'success',
-                "L'article de blog {{$blogArticle->getTitle()} a bien été modifé"
+                "L'article de blog {$blogArticle->getTitle()} a bien été modifé"
             );
             return $this->redirectToRoute('blog_show',[
                 'slug' => $blogArticle->getSlug()

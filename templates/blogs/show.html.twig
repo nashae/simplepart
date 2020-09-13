@@ -9,9 +9,11 @@
 		<div class="jumbotron">
 			<h1 class="display-5" align="center">{{blog.title}}</h1>
 			<hr class="my-4">
-			<p>par <a href="{{path('users_show',{'id': blog.author.id}) }}">{{blog.author.userName}}</a>
-				 le {{blog.createdAt|date('d/m/Y') }}
-      </p>
+			<p>par
+				<a href="{{path('users_Blog_Show',{'id': blog.author.id}) }}">{{blog.author.userName}}</a>
+				le
+				{{blog.createdAt|date('d/m/Y') }}
+			</p>
 		</div>
 		<p>{{blog.content|raw}}</p>
 
@@ -19,41 +21,64 @@
 		<hr>
 		<div class="alert alert-dismissible alert-warning">
 			<h4 class="alert-heading" align="center">ESPACE COMMENTAIRES</h4>
-			<p class="mb-0">
-				<a href="#" class="alert-link">connectez-vous</a>
-				pour participer à la discussion</p>
+			{% if app.user == null %}
+				<p class="mb-0">
+					<a href="{{path('app_login')}}" class="alert-link">Connectez-vous</a>
+					pour participer à la discussion
+				</p>
+			{% endif %}
+
+
 		</div>
-		<div id="commentaires"></div>
+		{% if app.user %}
+			{{form_start(form)}}
 
-		<div class="d-flex flex-column">
+			<div class="card border-warning mb-3">
+				
+				<div class="card-body">
 
-			{% for blogcomment in blog.blogcomments %}
+					<p class="card-text">{{form_widget(form)}}</p>
+					<button type="submit" class="btn btn-primary float-right">commenter</button>
+					{{form_end(form)}}
+				</div>
+			</div>
 
-				<div class="card border-secondary mt-3" style="width: 50rem;">
-					<div class="card-header">par
-						{{blogcomment.author.userName}}</div>
+			{#{{render(controller('App\\Controller\\CommentController::BlogCommentCreate', {'blogArticle': blog.id}))}} #}
+			{#{{ render(url('blogComment_create', {'blogArticle': blog.id})) }}#}
+
+
+		
+	{% endif %}
+	<div id="commentaires"></div>
+
+	<div class="d-flex flex-column">
+
+		{% for blogcomment in blog.blogcomments %}
+
+			<div class="card border-secondary mt-3" style="width: 50rem;">
+				<div class="card-header">par
+					{{blogcomment.author.userName}}</div>
+				<div class="card-body">
+					<p class="card-text">{{blogcomment.content}}</p>
+					<a href="{{path('blogCommentResponse_create', {'blogComment': blogcomment.id})}}">
+						<p class="card-text" align="right">répondre</p>
+					</a>
+				</div>
+			</div>
+
+			{% for blogCommentResponse in blogcomment.blogcommentResponses %}
+				<div class="card border-secondary border align-self-end" style="width: 50rem">
+					<div class="card-header">
+						{{blogCommentResponse.author.userName}}
+						a repondu</div>
 					<div class="card-body">
-						<p class="card-text">{{blogcomment.content}}</p>
-						<a href="#">
+						<p class="card-text">{{blogCommentResponse.content}}</p>
+						<a href="{{path('blogCommentResponse_create', {'blogComment': blogcomment.id})}}">
 							<p class="card-text" align="right">répondre</p>
 						</a>
 					</div>
 				</div>
-
-				{% for blogCommentResponse in blogcomment.blogcommentResponses %}
-					<div class="card border-secondary border align-self-end" style="width: 50rem">
-						<div class="card-header">
-							{{blogCommentResponse.author.userName}}
-							a repondu</div>
-						<div class="card-body">
-							<p class="card-text">{{blogCommentResponse.content}}</p>
-							<a href="#">
-								<p class="card-text" align="right">répondre</p>
-							</a>
-						</div>
-					</div>
-				{% endfor %}
 			{% endfor %}
-		</div>
+		{% endfor %}
 	</div>
-{% endblock %}
+</div>{% endblock %}

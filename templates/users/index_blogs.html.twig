@@ -5,13 +5,28 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		{% for article in paginator.dataByAuthor(users)%}
-			{% include "articles/_articleindexcard.html.twig" %}
+	
+		
 
-			
-		{% endfor %}
-		{% if paginator.dataByAuthor(users) | length > 0 %}
+<div class="container">
+			{% for blog in paginator.dataByAuthor(users) %}
+				<div class="jumbotron my-3">
+					<a href="{{path('blog_show', {'slug': blog.slug})}}">
+						<h1 class="display-5" align="center">{{blog.title}}</h1>
+					</a>
+					<hr class="my-4">
+					<p>par
+						{{blog.author.userName}}
+						le
+						{{blog.createdAt|date('d/m/Y') }}
+					</p>
+					{% if app.user.id == blog.author.id %}
+					<a href="{{path('blogs_edit', {'slug':blog.slug})}}">modifier ce billet</a>
+					{% endif %}
+				</div>
+				<p>{{blog.content|raw}}</p>
+			{% endfor %}
+    {% if paginator.dataByAuthor(users) | length > 5 %}
 			<div class="d-flex justify-content-center">
 				{% set page = paginator.page %}
 				{% set nbpages = paginator.pages %}
@@ -29,21 +44,5 @@
 				</ul>
 			</div>
 		{% endif %}
-
-
-			{% for blog in users.blogArticles %}
-				<div class="jumbotron my-3">
-					<a href="{{path('blog_show', {'slug': blog.slug})}}">
-						<h1 class="display-5" align="center">{{blog.title}}</h1>
-					</a>
-					<hr class="my-4">
-					<p>par
-						{{blog.author.userName}}
-						le
-						{{blog.createdAt|date('d/m/Y') }}</p>
-				</div>
-				<p>{{blog.content|raw}}</p>
-			{% endfor %}
-
 		</div>
 	{% endblock %}

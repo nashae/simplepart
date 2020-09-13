@@ -3,7 +3,7 @@
 				<h3 class="card-header">{{article.title}}</h3>
 			</a>
 			<div class="card-body">
-				<a href="{{path('users_show', {'id': article.author.id})}}" align="left" class="text-muted">par
+				<a href="{{path('users_Article_Show', {'id': article.author.id})}}" align="left" class="text-muted">par
 					{{article.author.userName}}</a>
 				<p>
 					{% if article.category == 'culture' %}

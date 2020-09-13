@@ -3,7 +3,7 @@
 		<h3 class="card-header">{{article.title}}</h3>
 	</a>
 	<div class="card-body">
-		<a href="{{path('users_show', {'id': article.author.id})}}">
+		<a href="{{path('users_Article_Show', {'id': article.author.id})}}">
 			<h6 class="card-subtitle text-muted" align="left">{{article.author.userName}}</h6>
 		</a>
 		<h6 class="card-subtitle text-muted" align="right">{{article.category}}</h6>

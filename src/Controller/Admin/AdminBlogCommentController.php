@@ -7,6 +7,8 @@ use App\Form\BlogCommentEditType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminBlogCommentController extends AbstractController
@@ -45,6 +47,7 @@ class AdminBlogCommentController extends AbstractController
      * permet à l'admin d'effacer un commentaire de blog
      * 
      * @Route("admin/blogcomment/{id}/delete", name="admin_blogComment_delete")
+     * @Security("is_granted('ROLE_USER') and user == blogComment.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette ressource")
      *
      * @param BlogComment $blogComment
      * @param EntityManagerInterface $manager

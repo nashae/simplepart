@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Réponse à un commentaire de blog
+{% endblock %}
+
+{% block body %}
+<div class="container">
+<h1 align="center">Répondre au commentaire</h1>
+
+{{form_start(form)}}
+
+<div class="card border-primary mb-3">
+	<div class="card-body">
+
+		<p class="card-text">{{form_widget(form)}}</p>
+		<button type="submit" class="btn btn-primary float-right">commenter</button>
+		{{form_end(form)}}
+	</div>
+</div>
+</div>
+{% endblock %}

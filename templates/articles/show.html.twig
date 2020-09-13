@@ -10,7 +10,7 @@
 		<div class="container">
 			<h1>{{ article.title }}</h1><br><br>
 			<p class="h3">{{ article.subTitle }}</p><br><br>
-			<a href="{{path('users_show',{'id': article.author.id}) }}">
+			<a href="{{path('users_Article_Show',{'id': article.author.id}) }}">
 				<p align="right">Par
 					{{article.author.userName}}</p>
 			</a>
@@ -71,23 +71,39 @@
 		</div>
 		<hr>
 		<div class="alert alert-dismissible alert-warning">
-  <h4 class="alert-heading" align="center">ESPACE COMMENTAIRES</h4>
-  <p class="mb-0"> <a href="#" class="alert-link">connectez-vous</a> pour participer à la discussion</p>
-</div>
-		<div id="commentaires">
-			
+			<h4 class="alert-heading" align="center">ESPACE COMMENTAIRES</h4>
+			{% if app.user == null %}
+				<p class="mb-0">
+					<a href="{{path('app_login')}}" class="alert-link">Connectez-vous</a>
+					pour participer à la discussion
+				</p>
+			{% endif %}
+
+
+		</div>
+		{% if app.user %}
+			{{form_start(form)}}
+
+			<div class="card border-warning mb-3">
+				<div class="card-body">
+
+					<p class="card-text">{{form_widget(form)}}</p>
+					<button type="submit" class="btn btn-primary float-right">commenter</button>
+					{{form_end(form)}}
+				</div>
 			</div>
+		{% endif %}
 		
 			<div class="d-flex flex-column">
 			
 				{% for comment in article.comments %}
 					
-					<div class="card border-secondary mt-3" style="width: 50rem;">
+					<div class="card border-secondary mt-3" style="width: 50rem;" id="commentaires">
 						<div class="card-header">par
 							{{comment.author.userName}}</div>
 						<div class="card-body">
 							<p class="card-text">{{comment.content}}</p>
-							<a href="#">
+							<a href="{{path('CommentResponse_create', {'comment': comment.id}) }}">
 								<p class="card-text" align="right">répondre</p>
 							</a>
 						</div>
@@ -100,7 +116,7 @@
 								a repondu</div>
 							<div class="card-body">
 								<p class="card-text">{{commentResponse.content}}</p>
-								<a href="#">
+								<a href="{{path('CommentResponse_create', {'comment': comment.id}) }}">
 									<p class="card-text" align="right">répondre</p>
 								</a>
 							</div>
