@@ -19,6 +19,16 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function search($mots)
+    {
+        $query = $this->createQueryBuilder('a');
+        if($mots){
+            $query->where('MATCH_AGAINST(a.title, a.content) AGAINST (:mots boolean)>0')
+                  ->setParameter('mots', $mots);
+        }
+        return $query->getQuery()->getResult();
+    }
+
     public function sortByDate()
     {
         $entityManager = $this->getEntityManager();

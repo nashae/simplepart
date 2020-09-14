@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\BlogArticle;
 use App\Form\ApplicationType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,7 +16,7 @@ class BlogArticleType extends ApplicationType
     {
         $builder
             ->add('title', TextType::class, $this->getConfiguration('Titre', "Titre de l'article"))
-            ->add('content',TextareaType::class, $this->getConfiguration('Contenu', "Contenu de l'article"))
+            ->add('content',CKEditorType::class, $this->getConfiguration('Contenu', "Contenu de l'article"))
         ;
     }
 

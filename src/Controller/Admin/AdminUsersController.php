@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminUsersController extends AbstractController
 {
     /**
+     * affiche la liste des users
      * @Route("/admin/users/{page<\d+>?1}", name="admin_users")
      */
     public function index(PaginatorService $paginator, $page)
@@ -27,6 +28,7 @@ class AdminUsersController extends AbstractController
     }
 
     /**
+     * affiche le detail d'un user
      * @Route("/admin/users/{id}/edit", name="admin_user_edit")
      */
     public function edit(Users $user, Request $request, EntityManagerInterface $manager)

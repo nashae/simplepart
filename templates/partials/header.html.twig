@@ -63,20 +63,25 @@
 						{% endif %}
 						{% if is_granted('ROLE_USER') %}
 							{% if not is_granted('ROLE_AUTHOR') %}
-								<a class="dropdown-item" href="#">Rédiger un blog</a>
+								<a class="dropdown-item" href="{{path('blogs_new')}}">Rédiger un blog</a>
 							{% endif %}
 						{% endif %}
 						{% if is_granted('ROLE_AUTHOR') %}
-							<a class="dropdown-item" href="#">Rédiger un article</a>
+							<a class="dropdown-item" href="{{path('article_create')}}">Rédiger un article</a>
 						{% endif %}
+
 					</div>
 				</li>
+				
+				
 				{% endif %}
+				<li class="nav_item">
+					<a class="nav-link" href="{{path('search_article')}}">Recherchez dans les articles</a>
+				</li>
 			</ul>
-			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="text" placeholder="Search">
-				<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-			</form>
+			
+			{#{{ render(controller('App\\Controller\\SearchArticleController::index', {'request': app.request})) }}#}
+			
 		</div>
 	</nav>
 </header>
